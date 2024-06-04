@@ -1,0 +1,47 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - 'main'
+
+permissions: write-all
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/copilothistoryexporter/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
+      - name: Build package
+        run: |
+          python3 setup.py sdist bdist_wheel
+      - name: Tag and release
+        run: |
+          git config --global user.email "github-actions[bot]@users.com"
+          git config --global user.name "github-actions[bot]"
+          git fetch --tags
+          git tag -l | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -oE '[0-9]+$' | sort -n | tail -n 1 | awk '{print "v1.0." $1 + 1}' | xargs git tag
+          git push origin --tags
+          export TARGET_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "TARGET_TAG=$TARGET_TAG" >> $GITHUB_ENV
+          gh release create $TARGET_TAG -t $TARGET_TAG -n "Release $TARGET_TAG"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.8.14
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+

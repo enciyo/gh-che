@@ -1,0 +1,7 @@
+/ai
+/.idea/*
+.pypirc
+build
+dist
+gh_copilot_history.egg-info
+

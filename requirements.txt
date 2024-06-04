@@ -1,0 +1,6 @@
+mitmproxy~=10.3.0
+click~=8.1.7
+wheel~=0.37.0
+setuptools~=70.0.0
+twine
+
