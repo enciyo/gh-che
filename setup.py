@@ -8,9 +8,9 @@ setup(
     author='mustafakilic',
     author_email='ben@mustafakilic.com',
     description='Long Description',
-    requires_python='>=3.11',
+    python_requires='~=3.11',
     install_requires=[
-        'mitmproxy~=10.3.0',
+        'mitmproxy; python_version == "3.11"',
         'click',
         'setuptools'
     ],
