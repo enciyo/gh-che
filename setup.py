@@ -4,6 +4,7 @@ setup(
     name='gh-che',
     version='3.0.0',
     packages=['che', 'che.intercept'],
+
     license='LICENCE',
     author='mustafakilic',
     author_email='ben@mustafakilic.com',
@@ -13,9 +14,13 @@ setup(
         'click',
         'setuptools'
     ],
+    package_data={
+        'che': ['sample.md']
+    },
     entry_points={
         'console_scripts': [
             "gh-che = che.main:main"
         ]
     }
+
 )
