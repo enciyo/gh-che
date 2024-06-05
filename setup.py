@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='gh-che',
-    version='3.0.0',
+    version='3.0.1',
     packages=['che', 'che.intercept'],
     license='LICENCE',
     author='mustafakilic',
