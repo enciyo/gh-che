@@ -14,7 +14,11 @@ def main(port, debug, project):
     project = os.path.abspath(project) if project else os.getcwd()
     utils.SharedValues.change_workspace(project)
     script = os.path.join(os.path.dirname(__file__), "binding.py")
-    shell_args = ["-p", f"{port}", "-s", script]
+    shell_args = ["-p", f"{port}", "-s", script,
+                  "--set add_upstream_certs_to_client_chain=true",
+                  "--set ssl_insecure=true",
+
+                  ]
     if debug:
         mitmweb(shell_args)
     else:
