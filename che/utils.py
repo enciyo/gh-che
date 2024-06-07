@@ -65,7 +65,14 @@ def write_to_json_file(conversations: dict):
 def get_config():
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
     if not os.path.exists(config_path):
-        save_config({"port": 9696, "debug": False, "project_path": os.getcwd()})
+        save_config(
+            {
+                "port": 9696,
+                "debug": False,
+                "project_path": os.getcwd(),
+                "listen_url": "https://api.githubcopilot.com/chat/completions"
+            }
+        )
     with open(config_path, "r") as f:
         return json.load(f)
 
