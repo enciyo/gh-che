@@ -25,6 +25,7 @@ def stop(ctx):
 def configure_pac(ctx):
     utils.create_pac_file()
 
+
 @cli1.command("change-project", help="Set the project path.")
 @click.argument('path', type=click.Path(exists=True, writable=True), required=False)
 @click.pass_context
@@ -32,6 +33,21 @@ def project(ctx, path):
     config = utils.get_config()
     config["project_path"] = os.path.abspath(path) if path else os.getcwd()
     utils.save_config(config)
+
+
+@cli1.command("show-config", help="Show the configuration.")
+@click.pass_context
+def show_config(ctx):
+    config = utils.get_config()
+    print(json.dumps(config, indent=2))
+
+
+@cli1.command("show-pac", help="Show the pac file.")
+@click.pass_context
+def show_pac(ctx):
+    pac_file = utils.get_pac_file()
+    with open(pac_file) as f:
+        print(f.read())
 
 
 @cli1.command(help="Start the gh-che proxy server.")

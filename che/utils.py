@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 
 from che.intercept.conversation import Conversation
@@ -89,8 +90,12 @@ def create_pac_file():
     with open(path, "r") as f:
         file = f.readlines()
     file = "".join(file)
-    file.replace("{{target_url}}", config["listen_url"])
-    file.replace("{{port}}", str(config["port"]))
+    file = re.sub(r'var proxyPort = \d+;', f'var proxyPort = {config["port"]};', file)
+    file = re.sub(r'var targetUrl = ".*";', f'var targetUrl = "{config["listen_url"]}";', file)
     with open(path, "w") as f:
         f.write(file)
     subprocess.run(f'networksetup -setautoproxyurl "Wi-Fi" {path}', shell=True)
+
+
+def get_pac_file():
+    return os.path.join(os.path.dirname(__file__), "proxy.pac")

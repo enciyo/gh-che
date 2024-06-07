@@ -1,6 +1,6 @@
 function FindProxyForURL(url, host) {
-    var proxyPort = {{port}};
-    var targetUrl = "{{targetUrl}}";
+    var proxyPort = 9797;
+    var targetUrl = "https://api.githubcopilot.com/chat/completions";
 
 
     function isPortOpen(port) {
