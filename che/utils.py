@@ -4,10 +4,6 @@ import subprocess
 
 from che.intercept.conversation import Conversation
 
-
-
-
-
 __AUTHOR_NAME = subprocess.run(["git", "config", "user.name"], capture_output=True).stdout.decode("utf-8").strip()
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
 __CURRENT_BRANCH = subprocess.run(["git", "branch", "--show-current"], capture_output=True).stdout.decode(
@@ -68,6 +64,8 @@ def write_to_json_file(conversations: dict):
 
 def get_config():
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
+    if not os.path.exists(config_path):
+        save_config({"port": 9696, "debug": False, "project_path": os.getcwd()})
     with open(config_path, "r") as f:
         return json.load(f)
 
@@ -76,3 +74,13 @@ def save_config(config):
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
+
+
+def create_pac_file():
+    config = get_config()
+    path = os.path.join(os.path.dirname(__file__), "sample.pac")
+    file = open(path, "r").read()
+    file.replace("{{target_url}}", config["listen_url"])
+    file.replace("{{port}}", str(config["port"]))
+    open("proxy.pac", "w").write(file)
+    subprocess.run(f'networksetup -setautoproxyurl "Wi-Fi" proxy.pac', shell=True)

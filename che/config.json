@@ -1,8 +1,0 @@
-{
-  "port": 9696,
-  "listen_url": "https://api.githubcopilot.com/chat/completions",
-  "debug": false,
-  "project_path": "adsadas",
-  "script_path": "binding.py",
-  "proxy_path": "proxy.pac"
-}

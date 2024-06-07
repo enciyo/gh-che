@@ -23,14 +23,7 @@ def stop(ctx):
 @cli1.command("configure-pac", help="Configure the pac file.")
 @click.pass_context
 def configure_pac(ctx):
-    config = utils.get_config()
-    path = os.path.join(os.path.dirname(__file__), config["proxy_path"])
-    file = open(path, "r").read()
-    file.replace("{{target_url}}", config["listen_url"])
-    file.replace("{{port}}", str(config["port"]))
-    open(path, "w").write(file)
-    subprocess.run(f'networksetup -setautoproxyurl "Wi-Fi" {path}', shell=True)
-
+    utils.create_pac_file()
 
 @cli1.command("change-project", help="Set the project path.")
 @click.argument('path', type=click.Path(exists=True, writable=True), required=False)
