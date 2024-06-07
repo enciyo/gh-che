@@ -5,12 +5,7 @@ import subprocess
 from che.intercept.conversation import Conversation
 
 
-class SharedValues:
-    WORKSPACE = ""
 
-    @staticmethod
-    def change_workspace(src: str):
-        SharedValues.WORKSPACE = src
 
 
 __AUTHOR_NAME = subprocess.run(["git", "config", "user.name"], capture_output=True).stdout.decode("utf-8").strip()
@@ -35,7 +30,7 @@ def create_or_open_file(file_path, mode):
 
 
 def get_output_dir():
-    return os.path.join(SharedValues.WORKSPACE, __PREF_DIR)
+    return os.path.join(get_config()["project_path"], __PREF_DIR)
 
 
 def create_md_block_from_sample(conversation: Conversation) -> str:
@@ -69,3 +64,15 @@ def write_to_json_file(conversations: dict):
     output_file = os.path.join(get_output_dir(), __CURRENT_BRANCH + ".json")
     with create_or_open_file(output_file, "w") as f:
         json.dump(conversations, f, indent=2, default=str, ensure_ascii=False)
+
+
+def get_config():
+    config_path = os.path.join(os.path.dirname(__file__), "config.json")
+    with open(config_path, "r") as f:
+        return json.load(f)
+
+
+def save_config(config):
+    config_path = os.path.join(os.path.dirname(__file__), "config.json")
+    with open(config_path, "w") as f:
+        json.dump(config, f, indent=2, default=str, ensure_ascii=False)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='gh-che',
-    version='3.0.1',
+    version='3.0.2',
     packages=['che', 'che.intercept'],
     license='LICENCE',
     author='mustafakilic',
@@ -15,7 +15,7 @@ setup(
         'setuptools'
     ],
     package_data={
-        'che': ['sample.md']
+        'che': ['*.md', "*.pac", "*.json"]
     },
     entry_points={
         'console_scripts': [

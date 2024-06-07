@@ -2,11 +2,10 @@ import re
 
 from mitmproxy import http
 
+from che import utils
 from che.intercept.conversation import Conversation
 from che.intercept.request import Request
 from che.intercept.chain import InterceptorChain
-
-LISTEN_URL = "https://api.githubcopilot.com/chat/completions"
 
 chain = InterceptorChain()
 
@@ -26,7 +25,7 @@ def get_message_from_response(data) -> list[Conversation]:
 
 
 def request(flow: http.HTTPFlow) -> None:
-    if flow.request.pretty_url == LISTEN_URL:
+    if flow.request.pretty_url == utils.get_config()["listen_url"]:
         data = flow.request.json()
         conversation = get_message_from_response(data)
         if conversation is not None:

@@ -44,6 +44,7 @@ gh-che --port 9696 project "path/project/src"
 
 4. Now start conversation with GitHub Copilot.
 
+
 #### Rating the message
 
 You can rate the message by clicking the thumbs up or thumbs down button on the chat window. But this project can't
@@ -67,12 +68,16 @@ vote:good
 #### Help
 
 ```shell
-Usage: gh-che [OPTIONS] [PROJECT]
+Usage: gh-che [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --port INTEGER   Running port
-  --debug BOOLEAN  Debug mode
-  --help           Show this message and exit.
+  --help  Show this message and exit.
+
+Commands:
+  change-project  Set the project path.
+  configure-pac   Configure the pac file.
+  start           Start the gh-che proxy server.
+  stop            Stop the gh-che proxy server.
 ```
 
 #### Contribution
