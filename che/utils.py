@@ -78,9 +78,12 @@ def save_config(config):
 
 def create_pac_file():
     config = get_config()
-    path = os.path.join(os.path.dirname(__file__), "sample.pac")
-    file = open(path, "r").read()
+    path = os.path.join(os.path.dirname(__file__), "proxy.pac")
+    with open(path, "r") as f:
+        file = f.readlines()
+    file = "".join(file)
     file.replace("{{target_url}}", config["listen_url"])
     file.replace("{{port}}", str(config["port"]))
-    open("proxy.pac", "w").write(file)
-    subprocess.run(f'networksetup -setautoproxyurl "Wi-Fi" proxy.pac', shell=True)
+    with open(path, "w") as f:
+        f.write(file)
+    subprocess.run(f'networksetup -setautoproxyurl "Wi-Fi" {path}', shell=True)
