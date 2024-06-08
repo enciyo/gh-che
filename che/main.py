@@ -20,14 +20,13 @@ def stop(ctx):
     subprocess.run(f"kill -9 $(lsof -t -i:{port})", shell=True)
 
 
-@cli1.command("change-project", help="Set the project path.")
+@cli1.command("project", help="Set the project path.")
 @click.argument('path', type=click.Path(exists=True, writable=True), required=False)
 @click.pass_context
 def project(ctx, path):
     config = utils.get_config()
     config["project_path"] = os.path.abspath(path) if path else os.getcwd()
     utils.save_config(config)
-
 
 @cli1.command("show-config", help="Show the configuration.")
 @click.pass_context
@@ -36,21 +35,13 @@ def show_config(ctx):
     print(json.dumps(config, indent=2))
 
 
-@cli1.command("show-pac", help="Show the pac file.")
-@click.pass_context
-def show_pac(ctx):
-    pac_file = utils.get_pac_file()
-    with open(pac_file) as f:
-        print(f.read())
-
-
 @cli1.command(help="Start the gh-che proxy server.")
 @click.option('--port', default=9696, help='Running port')
 @click.option('--debug', default=False, help='Debug mode')
 @click.option("--force-kill", default=True, help="Force kill the previous process.")
 @click.argument('path', type=click.Path(exists=True, writable=True), required=False, default=None)
 @click.pass_context
-def start(ctx, port, debug, auto_proxy, force_kill, path):
+def start(ctx, port, debug, force_kill, path):
     config = utils.get_config()
 
     config["port"] = port
