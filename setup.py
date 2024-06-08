@@ -1,8 +1,10 @@
+import subprocess
+
 from setuptools import setup
 
 setup(
     name='gh-che',
-    version='1.0.4',
+    version='1.0.8',
     packages=['che', 'che.intercept'],
     license='LICENCE',
     author='mustafakilic',
