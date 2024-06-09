@@ -6,7 +6,7 @@ from che.intercept.conversation import Conversation
 
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
 __PREF_DIR = "ai/copilot"
-
+__CONFIG = os.path.join(os.path.expanduser("~"), ".cache", "gh-che", "config.json")
 
 
 def __author_name():
@@ -83,8 +83,7 @@ def write_to_json_file(conversations: dict):
 
 
 def get_config():
-    config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    if not os.path.exists(config_path):
+    if not os.path.exists(__CONFIG):
         save_config(
             {
                 "port": 9696,
@@ -93,16 +92,10 @@ def get_config():
                 "listen_url": "https://api.githubcopilot.com/chat/completions"
             }
         )
-    with open(config_path, "r+") as f:
+    with open(__CONFIG, "r+") as f:
         return json.load(f)
 
 
 def save_config(config):
-    config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    with create_or_open_file(config_path, "w+") as f:
+    with create_or_open_file(__CONFIG, "w+") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
-
-
-if __name__ == '__main__':
-    print(__current_branch())
-    print(__author_name())

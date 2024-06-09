@@ -1,0 +1,2 @@
+[console_scripts]
+gh-che = che.main:main

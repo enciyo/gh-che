@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: gh-che
+Version: 1.0.15
+Summary: Chat History Exporter
+Author: mustafakilic
+Author-email: ben@mustafakilic.com
+License: LICENCE
+Requires-Python: ~=3.11
+License-File: LICENCE
+Requires-Dist: mitmproxy; python_version == "3.11"
+Requires-Dist: click
+Requires-Dist: setuptools

@@ -1,5 +1,4 @@
 #bin/bash
-# Commit all change
 git add .
 git commit -m "Release"
 git push origin main
