@@ -1,11 +1,16 @@
 import json
 import os
+import stat
 import subprocess
 
 from che.intercept.conversation import Conversation
 
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
 __PREF_DIR = "ai/copilot"
+
+
+def give_permission(file_path):
+    os.chmod(file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
 
 
 def __author_name():
@@ -32,6 +37,8 @@ def create_or_open_file(file_path, mode):
     directory, filename = os.path.split(file_path)
     if not os.path.exists(directory):
         os.makedirs(directory)
+        give_permission(directory)
+
     if not os.path.exists(file_path):
         with open(file_path, "w") as f:
             ext = os.path.splitext(filename)[1]
@@ -39,6 +46,7 @@ def create_or_open_file(file_path, mode):
                 f.write("[]")
             else:
                 f.write("")
+        give_permission(file_path)
     return open(file_path, mode)
 
 
@@ -96,7 +104,7 @@ def get_config():
 
 def save_config(config):
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    with open(config_path, "w") as f:
+    with create_or_open_file(config_path, "w") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
 
 
