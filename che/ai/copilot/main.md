@@ -10,3 +10,13 @@ Hello! How can I assist you with your Kotlin, Java, Gradle, Ruby, or Bundler pro
 ---
 
 
+#### Author
+enciyo
+#### Prompt
+Selam kral
+#### Answer ** 
+Hello! How can I assist you with your Kotlin, Java, Gradle, Ruby, or Bundler project today?
+
+---
+
+

@@ -10,7 +10,7 @@ __PREF_DIR = "ai/copilot"
 
 
 def give_permission(file_path):
-    os.chmod(file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
+    os.chmod(file_path, 777)
 
 
 def __author_name():
