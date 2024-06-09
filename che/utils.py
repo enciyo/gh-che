@@ -4,11 +4,17 @@ import subprocess
 
 from che.intercept.conversation import Conversation
 
-__AUTHOR_NAME = subprocess.run(["git", "config", "user.name"], capture_output=True).stdout.decode("utf-8").strip()
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
-__CURRENT_BRANCH = subprocess.run(["git", "branch", "--show-current"], capture_output=True).stdout.decode(
-    "utf-8").strip().replace("/", "-")
 __PREF_DIR = "ai/copilot"
+
+
+def __author_name():
+    return subprocess.run(["git", "config", "user.name"], capture_output=True).stdout.decode("utf-8").strip()
+
+
+def __current_branch():
+    return subprocess.run(["git", "branch", "--show-current"], capture_output=True).stdout.decode(
+        "utf-8").strip().replace("/", "-")
 
 
 def create_or_open_file(file_path, mode):
@@ -33,7 +39,7 @@ def create_md_block_from_sample(conversation: Conversation) -> str:
     with create_or_open_file(__SAMPLE_MD, "r") as f:
         block = f.readlines()
         block = "".join(block)
-        block = block.replace("{{author_name}}", __AUTHOR_NAME)
+        block = block.replace("{{author_name}}", __author_name())
         block = block.replace("{{prompt}}", conversation.prompt)
         block = block.replace("{{answer}}", conversation.answer)
         block = block.replace("{{rating}}", conversation.rating)
@@ -41,8 +47,8 @@ def create_md_block_from_sample(conversation: Conversation) -> str:
 
 
 def create_md_file(conversations: dict):
-    output_file = os.path.join(get_output_dir(), __CURRENT_BRANCH + ".md")
-    block = "# " + __CURRENT_BRANCH + "\n\n"
+    output_file = os.path.join(get_output_dir(), __current_branch() + ".md")
+    block = "# " + __current_branch() + "\n\n"
     for c in conversations:
         block += create_md_block_from_sample(Conversation.from_dict(c))
     with create_or_open_file(output_file, "w") as f:
@@ -50,14 +56,14 @@ def create_md_file(conversations: dict):
 
 
 def get_json_files():
-    output_file = os.path.join(get_output_dir(), __CURRENT_BRANCH + ".json")
+    output_file = os.path.join(get_output_dir(), __current_branch() + ".json")
     with create_or_open_file(output_file, "r") as f:
         conversations = json.load(f)
     return conversations
 
 
 def write_to_json_file(conversations: dict):
-    output_file = os.path.join(get_output_dir(), __CURRENT_BRANCH + ".json")
+    output_file = os.path.join(get_output_dir(), __current_branch() + ".json")
     with create_or_open_file(output_file, "w") as f:
         json.dump(conversations, f, indent=2, default=str, ensure_ascii=False)
 
@@ -81,4 +87,3 @@ def save_config(config):
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
-
