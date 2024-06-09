@@ -1,6 +1,5 @@
 import json
 import os
-import stat
 import subprocess
 
 from che.intercept.conversation import Conversation
@@ -8,9 +7,6 @@ from che.intercept.conversation import Conversation
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
 __PREF_DIR = "ai/copilot"
 
-
-def give_permission(file_path):
-    os.chmod(file_path, 777)
 
 
 def __author_name():
@@ -37,16 +33,15 @@ def create_or_open_file(file_path, mode):
     directory, filename = os.path.split(file_path)
     if not os.path.exists(directory):
         os.makedirs(directory)
-        give_permission(directory)
 
     if not os.path.exists(file_path):
-        with open(file_path, "w") as f:
+        with open(file_path, "w+") as f:
             ext = os.path.splitext(filename)[1]
             if ext == ".json":
                 f.write("[]")
             else:
                 f.write("")
-        give_permission(file_path)
+
     return open(file_path, mode)
 
 
@@ -55,7 +50,7 @@ def get_output_dir():
 
 
 def create_md_block_from_sample(conversation: Conversation) -> str:
-    with create_or_open_file(__SAMPLE_MD, "r") as f:
+    with create_or_open_file(__SAMPLE_MD, "r+") as f:
         block = f.readlines()
         block = "".join(block)
         block = block.replace("{{author_name}}", __author_name())
@@ -70,20 +65,20 @@ def create_md_file(conversations: dict):
     block = "# " + __current_branch() + "\n\n"
     for c in conversations:
         block += create_md_block_from_sample(Conversation.from_dict(c))
-    with create_or_open_file(output_file, "w") as f:
+    with create_or_open_file(output_file, "w+") as f:
         f.write(block)
 
 
 def get_json_files():
     output_file = os.path.join(get_output_dir(), __current_branch() + ".json")
-    with create_or_open_file(output_file, "r") as f:
+    with create_or_open_file(output_file, "r+") as f:
         conversations = json.load(f)
     return conversations
 
 
 def write_to_json_file(conversations: dict):
     output_file = os.path.join(get_output_dir(), __current_branch() + ".json")
-    with create_or_open_file(output_file, "w") as f:
+    with create_or_open_file(output_file, "w+") as f:
         json.dump(conversations, f, indent=2, default=str, ensure_ascii=False)
 
 
@@ -98,13 +93,13 @@ def get_config():
                 "listen_url": "https://api.githubcopilot.com/chat/completions"
             }
         )
-    with open(config_path, "r") as f:
+    with open(config_path, "r+") as f:
         return json.load(f)
 
 
 def save_config(config):
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
-    with create_or_open_file(config_path, "w") as f:
+    with create_or_open_file(config_path, "w+") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
 
 
