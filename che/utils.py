@@ -9,12 +9,23 @@ __PREF_DIR = "ai/copilot"
 
 
 def __author_name():
-    return subprocess.run(["git", "config", "user.name"], capture_output=True).stdout.decode("utf-8").strip()
+    path = os.path.join(get_config()["project_path"])
+    return subprocess.run(
+        f"cd {path} && git config user.name",
+        capture_output=True,
+        shell=True,
+        check=True
+    ).stdout.decode("utf-8").strip()
 
 
 def __current_branch():
-    return subprocess.run(["git", "branch", "--show-current"], capture_output=True).stdout.decode(
-        "utf-8").strip().replace("/", "-")
+    path = os.path.join(get_config()["project_path"])
+    return subprocess.run(
+        f"cd {path} && git branch --show-current",
+        shell=True,
+        check=True,
+        capture_output=True
+    ).stdout.decode("utf-8").strip().replace("/", "-")
 
 
 def create_or_open_file(file_path, mode):
@@ -87,3 +98,8 @@ def save_config(config):
     config_path = os.path.join(os.path.dirname(__file__), "config.json")
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2, default=str, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    print(__current_branch())
+    print(__author_name())

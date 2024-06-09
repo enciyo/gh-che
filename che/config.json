@@ -1,0 +1,6 @@
+{
+  "port": 9696,
+  "debug": false,
+  "project_path": "/Users/mustafakilic/PycharmProjects/gh-che/che",
+  "listen_url": "https://api.githubcopilot.com/chat/completions"
+}
