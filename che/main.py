@@ -48,7 +48,7 @@ def start(ctx, port, debug, force_kill, path):
     config["debug"] = debug
     config["project_path"] = os.path.abspath(path) if path else os.getcwd()
     script_path = os.path.join(os.path.dirname(__file__), "binding.py")
-    args = ["-p", f"{port}", "-s", script_path]
+    args = ["-p", f"{port}", "-s", script_path, "--set", "ssl_insecure=true"]
 
     if force_kill:
         ctx.invoke(stop)
