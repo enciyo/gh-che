@@ -28,6 +28,7 @@ def project(ctx, path):
     config["project_path"] = os.path.abspath(path) if path else os.getcwd()
     utils.save_config(config)
 
+
 @cli1.command("show-config", help="Show the configuration.")
 @click.pass_context
 def show_config(ctx):
@@ -48,7 +49,8 @@ def start(ctx, port, debug, force_kill, path):
     config["debug"] = debug
     config["project_path"] = os.path.abspath(path) if path else os.getcwd()
     script_path = os.path.join(os.path.dirname(__file__), "binding.py")
-    args = ["-p", f"{port}", "-s", script_path, "--set", "ssl_insecure=true"]
+    args = ["-p", f"{port}", "-s", script_path, "--set",
+            "allow_hosts=githubcopilot.com", "--view-filter '~d githubcopilot.com'"]
 
     if force_kill:
         ctx.invoke(stop)
