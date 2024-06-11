@@ -1,5 +1,6 @@
 import json
 import os
+import stat
 import subprocess
 
 from che.intercept.conversation import Conversation
@@ -33,6 +34,7 @@ def create_or_open_file(file_path, mode):
     directory, filename = os.path.split(file_path)
     if not os.path.exists(directory):
         os.makedirs(directory)
+        os.chmod(directory, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
     if not os.path.exists(file_path):
         with open(file_path, "w") as f:
@@ -41,7 +43,7 @@ def create_or_open_file(file_path, mode):
                 f.write("[]")
             else:
                 f.write("")
-
+    os.chmod(file_path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
     return open(file_path, mode)
 
 
