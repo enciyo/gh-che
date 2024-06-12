@@ -39,7 +39,8 @@ brew install gh-che
 3. Run below command in terminal.
 
 ```shell
-gh-che --port 9696 project "path/project/src"
+cd path/project/src
+gh-che start
 ```
 
 4. Now start conversation with GitHub Copilot.
@@ -74,10 +75,12 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  change-project  Set the project path.
-  configure-pac   Configure the pac file.
-  start           Start the gh-che proxy server.
-  stop            Stop the gh-che proxy server.
+  author       Set the author name
+  project      Set the project path.
+  show-config  Show the configuration.
+  start        Start the gh-che proxy server.
+  stop         Stop the gh-che proxy server.
+  version      Get the version
 ```
 
 #### Contribution

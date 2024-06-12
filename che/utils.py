@@ -6,11 +6,14 @@ import subprocess
 from che.intercept.conversation import Conversation
 
 __SAMPLE_MD = os.path.join(os.path.dirname(__file__), "sample.md")
-__PREF_DIR = "ai/copilot"
+__PREF_DIR = "ai/copilot/prompts"
 __CONFIG = os.path.join(os.path.expanduser("~"), ".cache", "gh-che", "config.json")
 
 
 def __author_name():
+    author = get_config().get("author")
+    if author:
+        return author
     path = os.path.join(get_config()["project_path"])
     return subprocess.run(
         f"cd {path} && git config user.name",
@@ -21,6 +24,9 @@ def __author_name():
 
 
 def __current_branch():
+    branch = get_config().get("branch")
+    if branch:
+        return branch
     path = os.path.join(get_config()["project_path"])
     return subprocess.run(
         f"cd {path} && git branch --show-current",

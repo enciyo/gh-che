@@ -2,7 +2,7 @@ import os
 
 from setuptools import setup
 
-properties = os.path.join(os.path.dirname(__file__), 'che.properties')
+properties = os.path.join(os.path.dirname(__file__), 'che', 'che.properties')
 with open(properties) as f:
     properties = f.readlines()
 prop_version = [line for line in properties if line.startswith("version")][0].split("=")[1].strip()

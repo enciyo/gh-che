@@ -3,6 +3,7 @@ README.md
 setup.py
 che/__init__.py
 che/binding.py
+che/che.properties
 che/config.json
 che/main.py
 che/sample.md
