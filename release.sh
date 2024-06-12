@@ -7,7 +7,7 @@ git fetch
 # Delete all tags
 git tag -l | xargs git tag -d
 # Create tag read 'version' from che.properties file
-version=$(grep "version" che.properties | cut -d'=' -f2)
+version=$(grep "version" che/che.properties | cut -d'=' -f2)
 git tag -a "$version" -m "Release $version"
 git push origin "$version"
 # Create a pre-release on GitHub
